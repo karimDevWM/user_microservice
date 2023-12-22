@@ -1,8 +1,21 @@
 using userMicroservice.Data;
+using userMicroservice.IoC.IoCApplication;
+using userMicroservice.IoC.IoCTest;
 using userMicroservice.Services;
 using userMicroservice.Services.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
+IConfiguration configuration = builder.Configuration;
+
+// if the actual environment running is Test, use the test database which is "InMemory database"
+if (builder.Environment.IsEnvironment("Test"))
+{
+    builder.Services.ConfigureDBContextTest();
+}
+else
+{
+    builder.Services.ConfigureDBContext(configuration);
+}
 
 // Add services to the container.
 builder.Services.AddScoped<IUserService, UserService>();
@@ -26,3 +39,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
