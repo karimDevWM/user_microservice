@@ -5,15 +5,10 @@ namespace userMicroservice.Data
 {
     public class DbContextClass : DbContext
     {
-        protected readonly IConfiguration Configuration;
-        public DbContextClass(IConfiguration configuration)
+        public DbContextClass(DbContextOptions options) : base(options)
         {
-            Configuration = configuration;
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-        }
+
         public DbSet<User> Users { get; set; }
     }
 }
